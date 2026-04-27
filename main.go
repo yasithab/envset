@@ -65,7 +65,7 @@ func main() {
 	root.Flags().BoolVarP(&dryRun, "dry-run", "d", false, "Output to stdout instead of inline replacement")
 	root.Flags().BoolVarP(&strict, "strict", "s", false, "Fail on any unset variable (with or without defaults)")
 	root.Flags().BoolVarP(&verbose, "verbose", "v", false, "Verbose logging")
-	root.Flags().StringVarP(&prefix, "prefix", "p", "", "Only expand variables matching this prefix (e.g. EP_)")
+	root.Flags().StringVarP(&prefix, "prefix", "p", "", "Only expand variables matching this prefix (e.g. ES_)")
 	root.Flags().StringVarP(&envFile, "env-file", "e", "", "Load additional env vars from a file before processing")
 
 	if err := root.Execute(); err != nil {

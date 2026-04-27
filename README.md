@@ -70,15 +70,15 @@ envset -v /etc/app.conf -- /usr/bin/myapp --config /etc/app.conf
 Use `--prefix` to only expand variables matching a specific prefix. All other `${...}` patterns are left untouched regardless of whether the variable is set.
 
 ```bash
-# Only expand variables starting with EP_
-envset -p EP_ /etc/app.conf
+# Only expand variables starting with ES_
+envset -p ES_ /etc/app.conf
 ```
 
-Given `EP_HOST=api.example.com` in the environment:
+Given `ES_HOST=api.example.com` in the environment:
 
 ```
 # Before
-server_name=${EP_HOST}
+server_name=${ES_HOST}
 template_var=${name}
 
 # After

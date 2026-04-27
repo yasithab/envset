@@ -11,8 +11,8 @@ func TestMain(m *testing.M) {
 	os.Setenv("DATABASE", "db.example.com")
 	os.Setenv("NULL", "")
 	os.Setenv("MODE", "debug")
-	os.Setenv("EP_HOST", "api.example.com")
-	os.Setenv("EP_PORT", "8080")
+	os.Setenv("ES_HOST", "api.example.com")
+	os.Setenv("ES_PORT", "8080")
 	os.Exit(m.Run())
 }
 
@@ -193,11 +193,11 @@ func TestExpandErrors(t *testing.T) {
 
 func TestExpandPrefix(t *testing.T) {
 	env := loadEnv()
-	cfg := Config{Prefix: "EP_"}
+	cfg := Config{Prefix: "ES_"}
 
 	t.Run("matching prefix expanded", func(t *testing.T) {
 		var st Stats
-		got, err := expand("host=${EP_HOST}:${EP_PORT}", "test", env, cfg, &st)
+		got, err := expand("host=${ES_HOST}:${ES_PORT}", "test", env, cfg, &st)
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
@@ -211,7 +211,7 @@ func TestExpandPrefix(t *testing.T) {
 
 	t.Run("non-matching prefix left as-is", func(t *testing.T) {
 		var st Stats
-		got, err := expand("${DATABASE} ${EP_HOST}", "test", env, cfg, &st)
+		got, err := expand("${DATABASE} ${ES_HOST}", "test", env, cfg, &st)
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
@@ -225,7 +225,7 @@ func TestExpandPrefix(t *testing.T) {
 
 	t.Run("prefix with node template", func(t *testing.T) {
 		var st Stats
-		input := "url=https://${host}:${port}\napi=${EP_HOST}"
+		input := "url=https://${host}:${port}\napi=${ES_HOST}"
 		got, err := expand(input, "test", env, cfg, &st)
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
@@ -238,9 +238,9 @@ func TestExpandPrefix(t *testing.T) {
 
 	t.Run("prefix strict only checks matching", func(t *testing.T) {
 		var st Stats
-		cfg := Config{Prefix: "EP_", Strict: true}
+		cfg := Config{Prefix: "ES_", Strict: true}
 		// ${DATABASE} doesn't match prefix, so strict doesn't apply to it
-		got, err := expand("${DATABASE} ${EP_HOST}", "test", env, cfg, &st)
+		got, err := expand("${DATABASE} ${ES_HOST}", "test", env, cfg, &st)
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
@@ -251,8 +251,8 @@ func TestExpandPrefix(t *testing.T) {
 
 	t.Run("prefix strict fails on unset matching var", func(t *testing.T) {
 		var st Stats
-		cfg := Config{Prefix: "EP_", Strict: true}
-		_, err := expand("${EP_MISSING}", "test", env, cfg, &st)
+		cfg := Config{Prefix: "ES_", Strict: true}
+		_, err := expand("${ES_MISSING}", "test", env, cfg, &st)
 		if err == nil {
 			t.Fatal("expected error for unset variable matching prefix in strict mode")
 		}
