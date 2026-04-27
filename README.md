@@ -6,14 +6,14 @@ Set environment variables into configuration files.
 
 ## How it works
 
-Envset parses arbitrary configuration files (using glob patterns) and replaces all references to environment variables with their values — inline (the files are modified in place).
+Envset parses arbitrary configuration files (using glob patterns) and replaces all references to environment variables with their values - inline (the files are modified in place).
 
 **Supported syntax:**
 
-- `${KEY}` — replaced if `KEY` is set in the environment, left as-is otherwise
-- `${KEY:-default value}` — uses the default if `KEY` is not set
+- `${KEY}` - replaced if `KEY` is set in the environment, left as-is otherwise
+- `${KEY:-default value}` - uses the default if `KEY` is not set
 
-Unset variables without defaults are silently skipped — safe for files that use `${...}` for other purposes (Node.js templates, shell scripts, etc.). Use `--strict` to error on any unset variable.
+Unset variables without defaults are silently skipped - safe for files that use `${...}` for other purposes (Node.js templates, shell scripts, etc.). Use `--strict` to error on any unset variable.
 
 ---
 
@@ -39,7 +39,7 @@ chmod +x /usr/local/bin/envset
 # Replace variables in a config file
 envset /etc/app.conf
 
-# Dry-run — see output without modifying files
+# Dry-run - see output without modifying files
 envset -d /etc/app.conf
 
 # Verbose mode with backup
@@ -119,7 +119,7 @@ Pass `--` after all arguments to exec another command after template processing:
 envset -v /etc/nginx/*.conf -- /usr/sbin/nginx -g "daemon off;"
 ```
 
-This replaces the current process with the specified command — useful as a Docker `CMD` entrypoint.
+This replaces the current process with the specified command - useful as a Docker `CMD` entrypoint.
 
 ---
 
