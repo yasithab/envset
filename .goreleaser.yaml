@@ -1,0 +1,54 @@
+version: 2
+project_name: envset
+
+builds:
+  - id: envset
+    main: .
+    binary: envset
+    goos: [darwin, linux]
+    goarch: [amd64, arm64]
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w -X main.Version={{.Version}}
+
+archives:
+  - formats: [tar.gz]
+    name_template: "{{ .ProjectName }}-{{ .Version }}-{{ .Os }}-{{ .Arch }}"
+
+checksum:
+  name_template: '{{ .ProjectName }}-checksums.txt'
+
+changelog:
+  disable: true
+
+homebrew_casks:
+- name: envset
+  homepage: https://github.com/yasithab/homebrew-taps
+  description: "Set environment variables into configuration files"
+  directory: Casks
+  binaries:
+  - envset
+  repository:
+    owner: yasithab
+    name: homebrew-taps
+    token: "{{ .Env.HOMEBREW_GITHUB_API_TOKEN }}"
+  commit_author:
+    name: "Yasitha Bogamuwa"
+    email: info@yasitha.dev
+  url:
+    template: "https://github.com/yasithab/homebrew-taps/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    verified: github.com/yasithab/homebrew-taps
+  hooks:
+    post:
+      install: |
+        if OS.mac?
+          system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/envset"]
+        end
+
+release:
+  github:
+    owner: yasithab
+    name: homebrew-taps
+  draft: false
+  prerelease: auto
